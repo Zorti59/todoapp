@@ -8,7 +8,7 @@ import { AlertController } from '@ionic/angular';
 })
 export class TodoPage implements OnInit {
 
-  taskName: any = '';
+  taskName: string = '';
   taskList = [];
 
   constructor(public alertCtrl: AlertController) { }
@@ -20,16 +20,18 @@ export class TodoPage implements OnInit {
     const prompt = await this.alertCtrl.create({
       inputs: [
         {
-          name: 'name',
+          name: 'taskName',
           type: 'text',
-          placeholder: 'Indiquez votre tâche'
+          placeholder: 'Indiquez votre tâche',
         },
       ],
       buttons: [
         {
           text: 'Enregistrer',
-          handler: (click) => {
-            ;
+          handler: data => {
+          this.taskName = data.taskName;
+          this.taskList.push(this.taskName);
+          console.log(this.taskList);
           }
         },
         {
@@ -47,7 +49,7 @@ export class TodoPage implements OnInit {
       this.taskName = '';
     }
   }
-  deleteTask(i) {
-    this.taskList.splice(i, 1);
+  deleteTask(index) {
+    this.taskList.splice(index, 1);
   }
 }
