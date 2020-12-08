@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
+import { create } from 'domain';
 
 @Component({
   selector: 'app-todo',
@@ -10,6 +11,8 @@ export class TodoPage implements OnInit {
 
   taskName: string = '';
   taskList = [];
+  checkBox = false;
+  
 
   constructor(public alertCtrl: AlertController) { }
 
@@ -41,15 +44,32 @@ export class TodoPage implements OnInit {
     });
     await prompt.present();
   }
+  deleteTask(index) {
+      this.alertCtrl.create({
+        header: 'Confirmez',
+        message: 'Êtes vous sûr de supprimer ?',
+        buttons: [
+          {
+            text: 'Oui',
+            handler: () => {
+              this.taskList.splice(index, 1);
+            }
+          },
+          {
+            text: 'Non',
+            handler: () => {
+            }
+          }
+        ]
+      }).then(res => {
+        res.present();
+        
+      });
+    }
 
-  addTask() {
-    if (this.taskName.length > 0) {
-      let task = this.taskName;
-      this.taskList.push(task);
-      this.taskName = '';
+    taskDone() {
+      if(this.checkBox == true) {
+        this.taskName.fontcolor("grey");
+      }
     }
   }
-  deleteTask(index) {
-    this.taskList.splice(index, 1);
-  }
-}
